@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset='utf-8' />
+    <title>Infosys Playground</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet' />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id='map'></div>
+
+    <script>
+        var lat, lng, lat1, lng1;
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                mapboxgl.accessToken = 'pk.eyJ1IjoicmFjaGV0YW5hIiwiYSI6ImNpc3g2cnlmZTA4NW0yeXBnMDZiNHUyMWMifQ.XCAmIR_6wdmkYDOBYrGk9Q';
+                lat = position.coords.latitude;
+                lng = position.coords.longitude;
+                var map = new mapboxgl.Map({
+                    container: 'map',
+                    style: 'mapbox://styles/mapbox/streets-v9',
+                    center: [lng, lat],
+                    pitch: 90, // pitch in degrees
+                    bearing: 10, // bearing in degrees
+                    zoom: 20,
+                    interactive: false
+                });
+                map.on('load', function() {
+                    // Insert the layer beneath any symbol layer.
+                    var layers = map.getStyle().layers;
+
+                    var labelLayerId;
+                    for (var i = 0; i < layers.length; i++) {
+                        if (layers[i].type === 'symbol' && layers[i].layout['text-field']) {
+                            labelLayerId = layers[i].id;
+                            break;
+                        }
+                    }
+
+                    map.addLayer({
+                        'id': '3d-buildings',
+                        'source': 'composite',
+                        'source-layer': 'building',
+                        'filter': ['==', 'extrude', 'true'],
+                        'type': 'fill-extrusion',
+                        'minzoom': 15,
+                        'paint': {
+                            'fill-extrusion-color': '#aaa',
+
+                            // use an 'interpolate' expression to add a smooth transition effect to the
+                            // buildings as the user zooms in
+                            'fill-extrusion-height': [
+                                "interpolate", ["linear"],
+                                ["zoom"],
+                                15, 0,
+                                15.05, ["get", "height"]
+                            ],
+                            'fill-extrusion-base': [
+                                "interpolate", ["linear"],
+                                ["zoom"],
+                                15, 0,
+                                15.05, ["get", "min_height"]
+                            ],
+                            'fill-extrusion-opacity': .6
+                        }
+                    }, labelLayerId);
+                });
+                map.on('load', function() {
+
+                    map.addLayer({
+                        "id": "points",
+                        "type": "symbol",
+                        "source": {
+                            "type": "geojson",
+                            "data": {
+                                "type": "FeatureCollection",
+                                "features": [{
+                                        "type": "Feature",
+                                        "properties": {},
+                                        "geometry": {
+                                            "type": "Point",
+                                            "coordinates": [
+                                                77.66630172729492,
+                                                12.849659461947123
+                                            ]
+                                        },
+                                        "properties": {
+                                            "title": "Milestone 1",
+                                            "icon": "monument"
+                                        }
+                                    },
+                                    {
+                                        "type": "Feature",
+                                        "properties": {},
+                                        "geometry": {
+                                            "type": "Point",
+                                            "coordinates": [
+                                                77.66613006591797,
+                                                12.850203389338484
+                                            ]
+                                        },
+                                        "properties": {
+                                            "title": "Milestone 2",
+                                            "icon": "monument"
+                                        }
+                                    },
+                                    {
+                                        "type": "Feature",
+                                        "properties": {},
+                                        "geometry": {
+                                            "type": "Point",
+                                            "coordinates": [
+                                                77.66658067703247,
+                                                12.850726395334727
+                                            ]
+                                        },
+                                        "properties": {
+                                            "title": "Milestone 3",
+                                            "icon": "monument"
+                                        }
+                                    },
+                                    {
+                                        "type": "Feature",
+                                        "properties": {},
+                                        "geometry": {
+                                            "type": "Point",
+                                            "coordinates": [
+                                                77.66664505004881,
+                                                12.851364461175303
+                                            ]
+                                        },
+                                        "properties": {
+                                            "title": "Milestone 4",
+                                            "icon": "monument"
+                                        }
+                                    },
+                                    {
+                                        "type": "Feature",
+                                        "properties": {},
+                                        "geometry": {
+                                            "type": "Point",
+                                            "coordinates": [
+                                                77.66602277755737,
+                                                12.851489982133455
+                                            ]
+                                        },
+                                        "properties": {
+                                            "title": "Milestone 5",
+                                            "icon": "monument"
+                                        }
+                                    },
+                                    {
+                                        "type": "Feature",
+                                        "properties": {},
+                                        "geometry": {
+                                            "type": "Point",
+                                            "coordinates": [
+                                                77.66591548919678,
+                                                12.851092498884093
+                                            ]
+                                        },
+                                        "properties": {
+                                            "title": "Milestone 6",
+                                            "icon": "monument"
+                                        }
+                                    },
+                                    {
+                                        "type": "Feature",
+                                        "properties": {},
+                                        "geometry": {
+                                            "type": "Point",
+                                            "coordinates": [
+                                                77.66529321670532,
+                                                12.850130168412107
+                                            ]
+                                        },
+                                        "properties": {
+                                            "title": "Milestone 7",
+                                            "icon": "monument"
+                                        }
+                                    },
+                                    {
+                                        "type": "Feature",
+                                        "properties": {},
+                                        "geometry": {
+                                            "type": "Point",
+                                            "coordinates": [
+                                                77.6653254032135,
+                                                12.849272435970665
+                                            ]
+                                        },
+                                        "properties": {
+                                            "title": "Milestone 8",
+                                            "icon": "monument"
+                                        }
+                                    }
+                                ]
+                            }
+                        },
+                        "layout": {
+                            "icon-image": "{icon}-15",
+                            "text-field": "{title}",
+                            "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
+                            "text-offset": [0, 0.6],
+                            "text-anchor": "top"
+                        }
+                    });
+                });
+                var geo_options = {
+                    enableHighAccuracy: true,
+                    maximumAge: 30000,
+                    timeout: 27000
+                };
+                var event = new CustomEvent('moved', { lnglat: [] });
+				function easing(t) {
+					return t * (2 - t);
+				}
+			   // pixels the map pans when the up or down arrow is clicked
+				var deltaDistance = 50;
+
+				// degrees the map rotates when the left or right arrow is clicked
+				var deltaDegrees = 25;
+
+                map.on('load', function() {
+                    map.getCanvas().focus();
+
+                    map.getCanvas().addEventListener('moved', function(e) {
+                        e.preventDefault();
+                        map.panTo(e.lnglat, {
+							easing: easing
+						});
+                        
+                    }, true);
+                });
+                var watchID = navigator.geolocation.watchPosition(function(position) {
+				    event.lnglat = [position.coords.longitude,position.coords.latitude];
+					map.getCanvas().dispatchEvent(event);
+                }, function(e) {}, geo_options);
+            });
+
+        } else {
+            /* geolocation IS NOT available */
+        }
+    </script>
+
+</body>
+
+</html>
