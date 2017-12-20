@@ -234,7 +234,7 @@
                     map.getCanvas().focus();
                     map.getCanvas().addEventListener('moveMap', function(e) {
                         e.preventDefault();
-						alert(speed +":"+ angle);
+						alert(e.lnglat);
                         map.panTo(e.lnglat, {
 							easing: easing
 						});                        
