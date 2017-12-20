@@ -264,11 +264,18 @@
 	    			 }
 				}
 				
+				function easing(t) {
+					return t * (2 - t);
+				}
+				
 				function move(){
 				   if(speed!=null && angle!=null){
 						mlat = map.getCenter().lat + speed*Math.cos(angle);
 						mlng = map.getCenter().lng + speed*Math.sin(angle);
-						//map.setCenter({lng:mlng,lat:mlat})
+						lnglat = [mlng,mlat];
+						map.panTo(lnglat, {
+							easing: easing
+						});
 					}
 				}
 				
