@@ -41,7 +41,7 @@
                     center: [lng, lat],
                     pitch: 90, // pitch in degrees
                     bearing: 10, // bearing in degrees
-                    zoom: 20,
+                    zoom: 18,
                     interactive: false
                 });
                 map.on('load', function() {
@@ -268,13 +268,13 @@
 				   if(speed!=null && angle!=null){
 						mlat = map.getCenter().lat + speed*Math.cos(angle);
 						mlng = map.getCenter().lng + speed*Math.sin(angle);
-						map.setCenter({lng:mlng,lat:mlat})
+						//map.setCenter({lng:mlng,lat:mlat})
 					}
 				}
 				
 				window.addEventListener('devicemotion', function(event) {
-					speed = event.accelerationIncludingGravity.x;
-					angle = event.rotationRate.gamma;
+					speed = Math.round(event.accelerationIncludingGravity.x);
+					angle = Math.round(event.rotationRate.gamma);
 				});
 			});
 				

@@ -223,50 +223,6 @@
                         }
                     });
                 });
-				
-				var rate = 0.02;
-				var pnoise = 10;
-				var mnoise = 3;
-				var kalmanX = new KalmanFilter(rate,pnoise,mnoise);
-  	            var kalmanY = new KalmanFilter(rate,pnoise,mnoise);
-								
-				var gpsrate = 0.1;
-				var gpsnoise = 0.00005;
-				var gps = {};
-				var kalman = {};
-								
-				window.setInterval(modelGPS, gpsrate*1000);
-				
-				var rate = 0.02;
-				window.setInterval(setLocation, rate*1000);
-				
-				var maprate = 0.1;
-				window.setInterval(move, maprate*1000);				
-				
-				var coordScale = 111300;
-				
-
-			
-				function modelGPS(){
-					gps.latitude = map.center.latitude + (Math.random()-.5)*gpsnoise;
-					gps.longitude = map.center.longitude + (Math.random()-.5)*gpsnoise;				
-				}
-				
-				function setLocation(){
-     				 if (gps.latitude != 0 || gps.longitude != 0) {
-						var gPoint = {latitude: gps.latitude , longitude: gps.longitude};
-						var kPoint = {x: kalmanX.update(gPoint.x), y: kalmanY.update(gPoint.y)}
-						kalman = kPoint;
-						var mPoint = map.center;
-
-	    			 }
-				}
-				
-				function move(){
-					map.center.latitude += speed*Math.cos(angle);
-					map.center.longitude += speed*Math.sin(angle);
-				}
-				
                 var geo_options = {
                     enableHighAccuracy: true,
                     maximumAge: 30000,
