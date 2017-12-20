@@ -7,6 +7,7 @@
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
 	<script src='https://archetana.github.io/sample/kjs/example/math.min.js'></script>
+	<script src='https://archetana.github.io/sample/kjs/kalman.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet' />
     <style>
         body {
@@ -224,27 +225,42 @@
                         }
                     });
                 });
+                var moveMapevent = new CustomEvent('moveMap', { lnglat: [] });
 							
 				function easing(t) {
 					return t * (2 - t);
 				}
                 map.on('load', function() {
                     map.getCanvas().focus();
-                    map.getCanvas().addEventListener('devicemotion', function(e) {
-					    speed = event.accelerationIncludingGravity.x;
-						angle = event.rotationRate.gamma;
-						alert(speed +":"+angle)
-						mlat = map.getCenter().lat + speed*Math.cos(angle);
-						mlng = map.getCenter().lng + speed*Math.sin(angle);
-						
-						lnglat = [mlng,mlat];
+                    map.getCanvas().addEventListener('moveMap', function(e) {
                         e.preventDefault();
-						
-                        map.panTo(lnglat, {
+						alert(speed +":"+ angle);
+                        map.panTo(e.lnglat, {
 							easing: easing
 						});                        
                     }, true);
                 });
+				
+				var speed = 1;
+				var angle = 1;
+							
+				var maprate = 0.1;
+				window.setInterval(move, maprate*1000);				
+
+				function move(){
+				   if(speed!=null && angle!=null){
+						mlat = map.getCenter().lat + speed*Math.cos(angle);
+						mlng = map.getCenter().lng + speed*Math.sin(angle);
+						moveMapevent.lnglat = [mlng,mlat];
+						map.getCanvas().dispatchEvent(moveMapevent);
+					}
+				}
+				
+				window.addEventListener('devicemotion', function(event) {
+					speed = event.accelerationIncludingGravity.x;
+					angle = event.rotationRate.gamma;
+					
+				});
 			});
 				
         } else {
