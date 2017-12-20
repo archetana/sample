@@ -9,9 +9,9 @@ window.addEventListener('devicemotion', function(event) {
   "<p>"+Math.round(event.accelerationIncludingGravity.x) +"</p>"+
   "<p>"+Math.round(event.accelerationIncludingGravity.y) +"</p>"+
   "<p>"+Math.round(event.accelerationIncludingGravity.z) +"</p>"+
-  "<p>"+event.rotationRate.alpha +"</p>" + 
-  "<p>"+event.rotationRate.beta +"</p>" +
-  "<p>"+event.rotationRate.gamma +"</p>";
+  "<p>"+Math.round(event.rotationRate.alpha) +"</p>" + 
+  "<p>"+Math.round(event.rotationRate.beta) +"</p>" +
+  "<p>"+Math.round(event.rotationRate.gamma) +"</p>";
 });
 </script>
 </html>
