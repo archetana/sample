@@ -6,6 +6,8 @@
     <title>Infosys Playground</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.js'></script>
+	<script src='https://archetana.github.io/sample/kjs/example/math.min.js'></script>
+	<script src='https://archetana.github.io/sample/kjs/kalman.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.42.2/mapbox-gl.css' rel='stylesheet' />
     <style>
         body {
@@ -223,6 +225,8 @@
                         }
                     });
                 });
+				var speed = 1;
+				var angle = 1;
 				
 				var rate = 0.02;
 				var pnoise = 10;
@@ -248,57 +252,32 @@
 
 			
 				function modelGPS(){
-					gps.latitude = map.center.latitude + (Math.random()-.5)*gpsnoise;
-					gps.longitude = map.center.longitude + (Math.random()-.5)*gpsnoise;				
+					gps.latitude = map.getCenter().lat+ (Math.random()-.5)*gpsnoise;
+					gps.longitude = map.getCenter().lng + (Math.random()-.5)*gpsnoise;				
 				}
 				
-				function setLocation(){
-     				 if (gps.latitude != 0 || gps.longitude != 0) {
+				function setLocation(){										
+     				 if (gps.latitude ||  gps.longitude) {
 						var gPoint = {latitude: gps.latitude , longitude: gps.longitude};
-						var kPoint = {x: kalmanX.update(gPoint.x), y: kalmanY.update(gPoint.y)}
+						var kPoint = {x: kalmanX.update(gPoint.latitude), y: kalmanY.update(gPoint.longitude)}
 						kalman = kPoint;
-						var mPoint = map.center;
-
 	    			 }
 				}
 				
 				function move(){
-					map.center.latitude += speed*Math.cos(angle);
-					map.center.longitude += speed*Math.sin(angle);
+				   if(speed!=null && angle!=null){
+						mlat = map.getCenter().lat + speed*Math.cos(angle);
+						mlng = map.getCenter().lng + speed*Math.sin(angle);
+						map.setCenter({lng:mlng,lat:mlat})
+					}
 				}
 				
-                var geo_options = {
-                    enableHighAccuracy: true,
-                    maximumAge: 30000,
-                    timeout: 27000
-                };
-                var event = new CustomEvent('moved', { lnglat: [] });
-				function easing(t) {
-					return t * (2 - t);
-				}
-			   // pixels the map pans when the up or down arrow is clicked
-				var deltaDistance = 50;
-
-				// degrees the map rotates when the left or right arrow is clicked
-				var deltaDegrees = 25;
-
-                map.on('load', function() {
-                    map.getCanvas().focus();
-
-                    map.getCanvas().addEventListener('moved', function(e) {
-                        e.preventDefault();
-                        map.panTo(e.lnglat, {
-							easing: easing
-						});
-                        
-                    }, true);
-                });
-                var watchID = navigator.geolocation.watchPosition(function(position) {
-				    event.lnglat = [position.coords.longitude,position.coords.latitude];
-					map.getCanvas().dispatchEvent(event);
-                }, function(e) {}, geo_options);
-            });
-
+				window.addEventListener('devicemotion', function(event) {
+					speed = event.accelerationIncludingGravity.x;
+					angle = event.rotationRate.gamma;
+				});
+			});
+				
         } else {
             /* geolocation IS NOT available */
         }
