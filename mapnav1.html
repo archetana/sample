@@ -257,8 +257,8 @@
 				}
 				
 				window.addEventListener('devicemotion', function(event) {
-					speed = event.accelerationIncludingGravity.x;
-					angle = event.rotationRate.gamma;
+					speed = event.accelerationIncludingGravity.x * 0.0000007/maprate;
+					angle += event.rotationRate.gamma*Math.PI/12;
 					
 				});
 			});
