@@ -233,7 +233,7 @@
                     map.getCanvas().addEventListener('devicemotion', function(e) {
 					    speed = event.accelerationIncludingGravity.x;
 						angle = event.rotationRate.gamma;
-						
+						alert(speed +":"+angle)
 						mlat = map.getCenter().lat + speed*Math.cos(angle);
 						mlng = map.getCenter().lng + speed*Math.sin(angle);
 						
