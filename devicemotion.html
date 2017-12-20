@@ -6,9 +6,9 @@
 var info = document.getElementById("info");
 window.addEventListener('devicemotion', function(event) {
   info.innerHTML = 
-  "<p>"+event.acceleration.x + 'm/s2' +"</p>"+
-  "<p>"+event.acceleration.y + 'm/s2' +"</p>"+
-  "<p>"+event.acceleration.z + 'm/s2' +"</p>"+
+  "<p>"+Math.round(event.accelerationIncludingGravity.x) +"</p>"+
+  "<p>"+Math.round(event.accelerationIncludingGravity.y) +"</p>"+
+  "<p>"+Math.round(event.accelerationIncludingGravity.z) +"</p>"+
   "<p>"+event.rotationRate.alpha +"</p>" + 
   "<p>"+event.rotationRate.beta +"</p>" +
   "<p>"+event.rotationRate.gamma +"</p>";
