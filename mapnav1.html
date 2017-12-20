@@ -282,6 +282,7 @@
 				window.addEventListener('devicemotion', function(event) {
 					speed = Math.round(event.accelerationIncludingGravity.x);
 					angle = Math.round(event.rotationRate.gamma);
+					alert(speed +":"+ angle);
 				});
 			});
 				
