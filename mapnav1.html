@@ -234,7 +234,6 @@
                     map.getCanvas().focus();
                     map.getCanvas().addEventListener('moveMap', function(e) {
                         e.preventDefault();
-						alert(e.lnglat);
                         map.panTo(e.lnglat, {
 							easing: easing
 						});                        
@@ -249,6 +248,7 @@
 
 				function move(){
 				   if(speed!=null && angle!=null){
+				        alert(map.getCenter() +":"+ speed +":"+ angle);
 						mlat = map.getCenter().lat + speed*Math.cos(angle);
 						mlng = map.getCenter().lng + speed*Math.sin(angle);
 						moveMapevent.lnglat = [mlng,mlat];
