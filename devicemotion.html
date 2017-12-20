@@ -1,0 +1,11 @@
+<html>
+<body>
+<div id="info"></div>
+</body>
+<script>
+var info = document.getElementById("info");
+window.addEventListener('devicemotion', function(event) {
+  info.innerHTML = event.acceleration.x + ' m/s2';
+});
+</script>
+</html>
