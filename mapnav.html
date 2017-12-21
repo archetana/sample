@@ -19,13 +19,27 @@
             bottom: 0;
             width: 100%;
         }
+		 #info {
+				display: block;
+				position: relative;
+				margin: 0px auto;
+				width: 50%;
+				padding: 10px;
+				border: none;
+				border-radius: 3px;
+				font-size: 12px;
+				text-align: center;
+				color: #222;
+				background: #fff;
+			}		
     </style>
 </head>
 
 <body>
 
     <div id='map'></div>
-
+	<pre id='info'></pre>
+	
     <script>
         var lat, lng, lat1, lng1;
         if ("geolocation" in navigator) {
@@ -38,7 +52,7 @@
                     style: 'mapbox://styles/mapbox/streets-v9',
                     center: [lng, lat],
                     pitch: 90, // pitch in degrees
-                    bearing: 10, // bearing in degrees
+                    bearing: 0, // bearing in degrees
                     zoom: 20,
                     interactive: false
                 });
@@ -60,14 +74,6 @@
 					point.coordinates[0] += speed * Math.sin(direction) / 100;
 					point.coordinates[1] += speed * Math.cos(direction) / 100;
 					map.getSource('drone').setData(point);
-
-					map.setLayoutProperty('drone', 'icon-rotate', direction * (180 / Math.PI));
-
-					if (!manual && Math.random() > 0.95) {
-						direction += (Math.random() - 0.5) / 2;
-					}
-
-					map.setCenter(point.coordinates);
 				}				
 				
                 map.on('load', function() {
@@ -292,6 +298,23 @@
 				    event.lnglat = [position.coords.longitude,position.coords.latitude];
 					map.getCanvas().dispatchEvent(event);
                 }, function(e) {}, geo_options);
+				
+				function onHeadingChange(event) {
+					 var heading = event.alpha;
+					 if (typeof event.webkitCompassHeading !== "undefined") {
+						  heading = event.webkitCompassHeading; //iOS non-standard
+						}
+					if (typeof heading !== "undefined" && heading !== null) { 
+      				   document.getElementById('info').innerHTML =
+							JSON.stringify(map.getBearing()) + '<br />' +
+							JSON.stringify(heading);
+						map.easeTo({
+							bearing: map.getBearing() + heading ,
+							easing: easing
+						});
+					}
+				}
+				window.addEventListener("deviceorientation", onHeadingChange);			
             });
 
         } else {
