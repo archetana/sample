@@ -42,7 +42,47 @@
                     zoom: 20,
                     interactive: false
                 });
+
+                var event = new CustomEvent('moved', { lnglat: [] });
+				function easing(t) {
+					return t * (2 - t);
+				}
+				
+				var direction = 0, manual = false, speed = 1;
+
+				// create a GeoJSON point to serve as a starting point
+				var point = {
+					"type": "Point",
+					"coordinates": [lng, lat]
+				};	
+				
+				function setPosition() {
+					point.coordinates[0] += speed * Math.sin(direction) / 100;
+					point.coordinates[1] += speed * Math.cos(direction) / 100;
+					map.getSource('drone').setData(point);
+
+					map.setLayoutProperty('drone', 'icon-rotate', direction * (180 / Math.PI));
+
+					if (!manual && Math.random() > 0.95) {
+						direction += (Math.random() - 0.5) / 2;
+					}
+
+					map.setCenter(point.coordinates);
+				}				
+				
                 map.on('load', function() {
+				
+					map.addSource('drone', { type: 'geojson', data: point });
+					
+					map.addLayer({
+						"id": "drone",
+						"type": "symbol",
+						"source": "drone",
+						"layout": {
+							"icon-image": "star-11",
+							"icon-rotation-alignment": "map"
+						}
+					});						
                     // Insert the layer beneath any symbol layer.
                     var layers = map.getStyle().layers;
 
@@ -81,8 +121,6 @@
                             'fill-extrusion-opacity': .6
                         }
                     }, labelLayerId);
-                });
-                map.on('load', function() {
 
                     map.addLayer({
                         "id": "points",
@@ -222,33 +260,34 @@
                             "text-anchor": "top"
                         }
                     });
-                });
-                var geo_options = {
-                    enableHighAccuracy: true,
-                    maximumAge: 30000,
-                    timeout: 27000
-                };
-                var event = new CustomEvent('moved', { lnglat: [] });
-				function easing(t) {
-					return t * (2 - t);
-				}
-			   // pixels the map pans when the up or down arrow is clicked
-				var deltaDistance = 50;
+					
+					function setPosition(lnglat) {
+						point.coordinates[0] = lnglat[0];
+						point.coordinates[1] =  lnglat[1];
+						map.getSource('drone').setData(point);
 
-				// degrees the map rotates when the left or right arrow is clicked
-				var deltaDegrees = 25;
-
-                map.on('load', function() {
-                    map.getCanvas().focus();
+						map.setCenter(point.coordinates);
+					}
+					
+					map.getCanvas().focus();
 
                     map.getCanvas().addEventListener('moved', function(e) {
                         e.preventDefault();
                         map.panTo(e.lnglat, {
 							easing: easing
 						});
-                        
+                        setPosition(e.lnglat);
                     }, true);
+				
                 });
+		
+				
+                var geo_options = {
+                    enableHighAccuracy: true,
+                    maximumAge: 30000,
+                    timeout: 27000
+                };
+
                 var watchID = navigator.geolocation.watchPosition(function(position) {
 				    event.lnglat = [position.coords.longitude,position.coords.latitude];
 					map.getCanvas().dispatchEvent(event);
