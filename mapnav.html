@@ -308,10 +308,7 @@
       				   document.getElementById('info').innerHTML =
 							JSON.stringify(map.getBearing()) + '<br />' +
 							JSON.stringify(heading);
-						map.easeTo({
-							bearing: heading ,
-							easing: easing
-						});
+						map.setBearing(heading);
 					}
 				}
 				window.addEventListener("deviceorientation", onHeadingChange);			
