@@ -41,6 +41,21 @@
 	<pre id='info'></pre>
 	
     <script>
+	    // Control implemented as ES6 class
+class HelloWorldControl {
+    onAdd(map) {
+        this._map = map;
+        this._container = document.createElement('div');
+        this._container.className = 'mapboxgl-ctrl';
+        this._container.textContent = 'Hello, world';
+        return this._container;
+    }
+
+    onRemove() {
+        this._container.parentNode.removeChild(this._container);
+        this._map = undefined;
+    }
+}
         var lat, lng;
 		var milestones = [];
 		document.getElementById('info').innerHTML = "Score: " + milestones.length;	
@@ -194,6 +209,9 @@
 					},
 					showUserLocation: false
 				}));
+		    
+				// Add custom control to the map.
+				map.addControl(new mapboxgl.HelloWorldControl();		    
 				
                 var event = new CustomEvent('moved', { lnglat: [] });
 				function easing(t) {
