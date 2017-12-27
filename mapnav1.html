@@ -48,7 +48,7 @@ HelloWorldControl.prototype.onAdd = function(map) {
     this._map = map;
     this._container = document.createElement('div');
     this._container.className = 'mapboxgl-ctrl';
-    this._container.textContent = 'Hello, world';
+    this._container.textContent = '<button class="mapboxgl-ctrl-icon mapboxgl-ctrl-geolocate" type="button"></button>';
     return this._container;
 };
 
@@ -199,16 +199,7 @@ HelloWorldControl.prototype.onRemove = function () {
                     interactive: true
                 });
 
-				// Add geolocate control to the map.
-				map.addControl(new mapboxgl.GeolocateControl({
-					positionOptions: {
-						enableHighAccuracy: true
-					},
-					fitBoundsOptions: {
-						maxZoom: 20
-					},
-					showUserLocation: false
-				}));
+
 		    
 				// Add custom control to the map.
 				map.addControl(new HelloWorldControl());		    
