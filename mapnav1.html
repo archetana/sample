@@ -47,8 +47,10 @@ function HelloWorldControl() { }
 HelloWorldControl.prototype.onAdd = function(map) {
     this._map = map;
     this._container = document.createElement('div');
-    this._container.className = 'mapboxgl-ctrl';
-    this._container.textContent = '<button class="mapboxgl-ctrl-icon mapboxgl-ctrl-geolocate" type="button"></button>';
+    this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
+    this._geolocateButton = document.createElement('button');
+    this._geolocateButton.className = `mapboxgl-ctrl-icon mapboxgl-ctrl-geolocate`;
+    this._container.appendChild(this._geolocateButton);	
     return this._container;
 };
 
