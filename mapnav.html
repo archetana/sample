@@ -41,7 +41,26 @@
 	<pre id='info'></pre>
 	
     <script>
-        var lat, lng;
+	     var lat, lng;
+// Control implemented as ES5 prototypical class
+function HelloWorldControl() { }
+
+HelloWorldControl.prototype.onAdd = function(map) {
+    this._map = map;
+    this._container = document.createElement('div');
+    this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
+    this._geolocateButton = document.createElement('button');
+    this._geolocateButton.className = `mapboxgl-ctrl-icon mapboxgl-ctrl-geolocate`;
+    this._geolocateButton.addEventListener('click',function(){map.setCenter([lng,lat])});	
+    this._container.appendChild(this._geolocateButton);	
+    return this._container;
+};
+
+HelloWorldControl.prototype.onRemove = function () {
+     this._container.parentNode.removeChild(this._container);
+     this._map = undefined;
+};
+       
 		var milestones = [];
 		document.getElementById('info').innerHTML = "Score: " + milestones.length;	
 
@@ -181,9 +200,14 @@
                     pitch: 90, // pitch in degrees
                     bearing: 0, // bearing in degrees
                     zoom: 20,
-                    interactive: false
+                    interactive: true
                 });
 
+
+		    
+				// Add custom control to the map.
+				map.addControl(new HelloWorldControl());		    
+				
                 var event = new CustomEvent('moved', { lnglat: [] });
 				function easing(t) {
 					return t * (2 - t);
@@ -205,7 +229,7 @@
 						"type": "symbol",
 						"source": "drone",
 						"layout": {
-							"icon-image": "star-11",
+							"icon-image": "circle-15",
 							"icon-rotation-alignment": "map"
 						}
 					});						
@@ -315,10 +339,10 @@
                     timeout: 27000
                 };
 
-                var watchID = navigator.geolocation.watchPosition(function(position) {
-				    event.lnglat = [position.coords.longitude,position.coords.latitude];
-					map.getCanvas().dispatchEvent(event);
-                }, function(e) {}, geo_options);
+              //  var watchID = navigator.geolocation.watchPosition(function(position) {
+				//    event.lnglat = [position.coords.longitude,position.coords.latitude];
+				//	map.getCanvas().dispatchEvent(event);
+              //  }, function(e) {}, geo_options);
 				
 				function onHeadingChange(event) {
 					 var heading = event.alpha;
