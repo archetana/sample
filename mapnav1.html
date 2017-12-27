@@ -51,7 +51,7 @@ HelloWorldControl.prototype.onAdd = function(map) {
     this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
     this._geolocateButton = document.createElement('button');
     this._geolocateButton.className = `mapboxgl-ctrl-icon mapboxgl-ctrl-geolocate`;
-    this._geolocateButton.addEventListener('click',function(){this._map.setCenter([lng,lat])});	
+    this._geolocateButton.addEventListener('click',function(){map.setCenter([lng,lat])});	
     this._container.appendChild(this._geolocateButton);	
     return this._container;
 };
