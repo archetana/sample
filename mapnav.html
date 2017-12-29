@@ -335,9 +335,12 @@
                         e.preventDefault();
 						cPoint = map.getCenter();
 						if(e.lpoint.coordinates[0]== cPoint.lng && e.lpoint.coordinates[1]== cPoint.lat){
+						    map._interactive = false;
 							map.panTo(e.lnglat, {
 								easing: easing
 							});
+							map._interactive = true;
+							map.setCenter(e.lnglat);
 						}
                         setPosition(e.lnglat);
                     }, true);
