@@ -339,10 +339,10 @@ HelloWorldControl.prototype.onRemove = function () {
                     timeout: 27000
                 };
 
-              //  var watchID = navigator.geolocation.watchPosition(function(position) {
-				//    event.lnglat = [position.coords.longitude,position.coords.latitude];
-				//	map.getCanvas().dispatchEvent(event);
-              //  }, function(e) {}, geo_options);
+                var watchID = navigator.geolocation.watchPosition(function(position) {
+				event.lnglat = [position.coords.longitude,position.coords.latitude];
+				map.getCanvas().dispatchEvent(event);
+                }, function(e) {}, geo_options);
 				
 				function onHeadingChange(event) {
 					 var heading = event.alpha;
