@@ -43,9 +43,9 @@
     <script>
 	     var lat, lng;
 // Control implemented as ES5 prototypical class
-function HelloWorldControl() { }
+function GControl() { }
 
-HelloWorldControl.prototype.onAdd = function(map) {
+GControl.prototype.onAdd = function(map) {
     this._map = map;
     this._container = document.createElement('div');
     this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
@@ -56,7 +56,7 @@ HelloWorldControl.prototype.onAdd = function(map) {
     return this._container;
 };
 
-HelloWorldControl.prototype.onRemove = function () {
+GControl.prototype.onRemove = function () {
      this._container.parentNode.removeChild(this._container);
      this._map = undefined;
 };
@@ -206,7 +206,7 @@ HelloWorldControl.prototype.onRemove = function () {
 
 		    
 				// Add custom control to the map.
-				map.addControl(new HelloWorldControl());		    
+				map.addControl(new GControl());		    
 				
                 var event = new CustomEvent('moved', { lnglat: [] });
 				function easing(t) {
@@ -309,7 +309,7 @@ HelloWorldControl.prototype.onRemove = function () {
 						point.coordinates[0] = lnglat[0];
 						point.coordinates[1] =  lnglat[1];
 						map.getSource('drone').setData(point);
-						map.setCenter(point.coordinates);
+						//map.setCenter(point.coordinates);
 						milestoneData.features.forEach(function(x){
 							dist = compareLatLon(lnglat[0],lnglat[1],x.geometry.coordinates[0],x.geometry.coordinates[1]);
 							if(dist<=0.015){
