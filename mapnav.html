@@ -19,184 +19,170 @@
             bottom: 0;
             width: 100%;
         }
-		 #info {
-				display: block;
-				position: relative;
-				margin: 0px auto;
-				width: 50%;
-				padding: 10px;
-				border: none;
-				border-radius: 3px;
-				font-size: 12px;
-				text-align: center;
-				color: #222;
-				background: #fff;
-			}		
+
+        #info {
+            display: block;
+            position: relative;
+            margin: 0px auto;
+            width: 50%;
+            padding: 10px;
+            border: none;
+            border-radius: 3px;
+            font-size: 12px;
+            text-align: center;
+            color: #222;
+            background: #fff;
+        }
     </style>
 </head>
 
 <body>
 
     <div id='map'></div>
-	<pre id='info'></pre>
-	
+    <pre id='info'></pre>
+
     <script>
-	     var lat, lng;
-// Control implemented as ES5 prototypical class
-function GControl() { }
+		var mPoint = {
+			"type": "Point",
+			"coordinates": []
+		};		
+        // Control implemented as ES5 prototypical class
+ 
+        var milestones = [];
+        document.getElementById('info').innerHTML = "Score: " + milestones.length;
 
-GControl.prototype.onAdd = function(map) {
-    this._map = map;
-    this._container = document.createElement('div');
-    this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
-    this._geolocateButton = document.createElement('button');
-    this._geolocateButton.className = `mapboxgl-ctrl-icon mapboxgl-ctrl-geolocate`;
-    this._geolocateButton.addEventListener('click',function(){map.setCenter([lng,lat])});	
-    this._container.appendChild(this._geolocateButton);	
-    return this._container;
-};
-
-GControl.prototype.onRemove = function () {
-     this._container.parentNode.removeChild(this._container);
-     this._map = undefined;
-};
-       
-		var milestones = [];
-		document.getElementById('info').innerHTML = "Score: " + milestones.length;	
-
-		var milestoneData = {
-					"type": "FeatureCollection",
-					"features": [{
-							"type": "Feature",
-							"properties": {},
-							"geometry": {
-								"type": "Point",
-								"coordinates": [
-									77.66630172729492,
-									12.849659461947123
-								]
-							},
-							"properties": {
-								"title": "Milestone 1",
-								"icon": "monument"
-							}
-						},
-						{
-							"type": "Feature",
-							"properties": {},
-							"geometry": {
-								"type": "Point",
-								"coordinates": [
-									77.66613006591797,
-									12.850203389338484
-								]
-							},
-							"properties": {
-								"title": "Milestone 2",
-								"icon": "monument"
-							}
-						},
-						{
-							"type": "Feature",
-							"properties": {},
-							"geometry": {
-								"type": "Point",
-								"coordinates": [
-									77.66658067703247,
-									12.850726395334727
-								]
-							},
-							"properties": {
-								"title": "Milestone 3",
-								"icon": "monument"
-							}
-						},
-						{
-							"type": "Feature",
-							"properties": {},
-							"geometry": {
-								"type": "Point",
-								"coordinates": [
-									77.66664505004881,
-									12.851364461175303
-								]
-							},
-							"properties": {
-								"title": "Milestone 4",
-								"icon": "monument"
-							}
-						},
-						{
-							"type": "Feature",
-							"properties": {},
-							"geometry": {
-								"type": "Point",
-								"coordinates": [
-									77.66602277755737,
-									12.851489982133455
-								]
-							},
-							"properties": {
-								"title": "Milestone 5",
-								"icon": "monument"
-							}
-						},
-						{
-							"type": "Feature",
-							"properties": {},
-							"geometry": {
-								"type": "Point",
-								"coordinates": [
-									77.66591548919678,
-									12.851092498884093
-								]
-							},
-							"properties": {
-								"title": "Milestone 6",
-								"icon": "monument"
-							}
-						},
-						{
-							"type": "Feature",
-							"properties": {},
-							"geometry": {
-								"type": "Point",
-								"coordinates": [
-									77.66529321670532,
-									12.850130168412107
-								]
-							},
-							"properties": {
-								"title": "Milestone 7",
-								"icon": "monument"
-							}
-						},
-						{
-							"type": "Feature",
-							"properties": {},
-							"geometry": {
-								"type": "Point",
-								"coordinates": [
-									77.6653254032135,
-									12.849272435970665
-								]
-							},
-							"properties": {
-								"title": "Milestone 8",
-								"icon": "monument"
-							}
-						}
-					]
-				};		
+        var milestoneData = {
+            "type": "FeatureCollection",
+            "features": [{
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            77.66630172729492,
+                            12.849659461947123
+                        ]
+                    },
+                    "properties": {
+                        "title": "Milestone 1",
+                        "icon": "monument"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            77.66613006591797,
+                            12.850203389338484
+                        ]
+                    },
+                    "properties": {
+                        "title": "Milestone 2",
+                        "icon": "monument"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            77.66658067703247,
+                            12.850726395334727
+                        ]
+                    },
+                    "properties": {
+                        "title": "Milestone 3",
+                        "icon": "monument"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            77.66664505004881,
+                            12.851364461175303
+                        ]
+                    },
+                    "properties": {
+                        "title": "Milestone 4",
+                        "icon": "monument"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            77.66602277755737,
+                            12.851489982133455
+                        ]
+                    },
+                    "properties": {
+                        "title": "Milestone 5",
+                        "icon": "monument"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            77.66591548919678,
+                            12.851092498884093
+                        ]
+                    },
+                    "properties": {
+                        "title": "Milestone 6",
+                        "icon": "monument"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            77.66529321670532,
+                            12.850130168412107
+                        ]
+                    },
+                    "properties": {
+                        "title": "Milestone 7",
+                        "icon": "monument"
+                    }
+                },
+                {
+                    "type": "Feature",
+                    "properties": {},
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [
+                            77.6653254032135,
+                            12.849272435970665
+                        ]
+                    },
+                    "properties": {
+                        "title": "Milestone 8",
+                        "icon": "monument"
+                    }
+                }
+            ]
+        };
         if ("geolocation" in navigator) {
             navigator.geolocation.getCurrentPosition(function(position) {
                 mapboxgl.accessToken = 'pk.eyJ1IjoicmFjaGV0YW5hIiwiYSI6ImNpc3g2cnlmZTA4NW0yeXBnMDZiNHUyMWMifQ.XCAmIR_6wdmkYDOBYrGk9Q';
-                lat = position.coords.latitude;
-                lng = position.coords.longitude;
+				mPoint.coordinates = [position.coords.longitude, position.coords.latitude]
                 var map = new mapboxgl.Map({
                     container: 'map',
                     style: 'mapbox://styles/mapbox/streets-v9',
-                    center: [lng, lat],
+                    center: mPoint.coordinates,
                     pitch: 90, // pitch in degrees
                     bearing: 0, // bearing in degrees
                     zoom: 20,
@@ -204,35 +190,59 @@ GControl.prototype.onRemove = function () {
                 });
 
 
-		    
-				// Add custom control to the map.
-				map.addControl(new GControl());		    
-				
-                var event = new CustomEvent('moved', { lnglat: [] });
-				function easing(t) {
-					return t * (2 - t);
-				}
-				
-				var direction = 0, manual = false, speed = 1;
-				
-				var point = {
-					"type": "Point",
-					"coordinates": [lng, lat]
-				};	
+                function easing(t) {
+                    return t * (2 - t);
+                }
+
+                var direction = 0,
+                    manual = false,
+                    speed = 1;
+
+
+				var mEvent = new CustomEvent('moved', {
+                    lnglat: [],
+					lpoint: mPoint
+                });
 				
                 map.on('load', function() {
-				
-					map.addSource('drone', { type: 'geojson', data: point });
+
+                    map.addSource('drone', {
+                        type: 'geojson',
+                        data: mPoint
+                    });
+
+				   function GControl() {}
+
+					GControl.prototype.onAdd = function(map) {
+						this._map = map;
+						this._container = document.createElement('div');
+						this._container.className = 'mapboxgl-ctrl mapboxgl-ctrl-group';
+						this._geolocateButton = document.createElement('button');
+						this._geolocateButton.className = `mapboxgl-ctrl-icon mapboxgl-ctrl-geolocate`;
+						this._geolocateButton.addEventListener('click', function() {
+							map.setCenter(map.getSource('drone').map.getSource('drone')._data.coordinates)
+						});
+						this._container.appendChild(this._geolocateButton);
+						return this._container;
+					};
+
+					GControl.prototype.onRemove = function() {
+						this._container.parentNode.removeChild(this._container);
+						this._map = undefined;
+					};					
+
+					// Add custom control to the map.
+                    map.addControl(new GControl()); 
 					
-					map.addLayer({
-						"id": "drone",
-						"type": "symbol",
-						"source": "drone",
-						"layout": {
-							"icon-image": "circle-15",
-							"icon-rotation-alignment": "map"
-						}
-					});						
+                    map.addLayer({
+                        "id": "drone",
+                        "type": "symbol",
+                        "source": "drone",
+                        "layout": {
+                            "icon-image": "circle-15",
+                            "icon-rotation-alignment": "map"
+                        }
+                    });
                     // Insert the layer beneath any symbol layer.
                     var layers = map.getStyle().layers;
 
@@ -271,7 +281,7 @@ GControl.prototype.onRemove = function () {
                             'fill-extrusion-opacity': .6
                         }
                     }, labelLayerId);
-					
+
 
                     map.addLayer({
                         "id": "points",
@@ -288,51 +298,53 @@ GControl.prototype.onRemove = function () {
                             "text-anchor": "top"
                         }
                     });
-					
-					function compareLatLon (lat1, lon1, lat2, lon2) {
-					  var radius = 6371; // Radius of the earth in km
-					  var dLat = deg2rad(lat2 - lat1);
-					  var dLon = deg2rad(lon2 - lon1);
-					  var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-						Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
-						Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
-					  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-					  return radius * c;
-					}
+                    function compareLatLon(lat1, lon1, lat2, lon2) {
+                        var radius = 6371; // Radius of the earth in km
+                        var dLat = deg2rad(lat2 - lat1);
+                        var dLon = deg2rad(lon2 - lon1);
+                        var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                            Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
-					function deg2rad (deg) {
-					  return deg * (Math.PI / 180);
-					}					
-					
-					function setPosition(lnglat) {
-						point.coordinates[0] = lnglat[0];
-						point.coordinates[1] =  lnglat[1];
-						map.getSource('drone').setData(point);
-						//map.setCenter(point.coordinates);
-						milestoneData.features.forEach(function(x){
-							dist = compareLatLon(lnglat[0],lnglat[1],x.geometry.coordinates[0],x.geometry.coordinates[1]);
-							if(dist<=0.015){
-								if (milestones.indexOf(x.properties.title) === -1) milestones.push(x.properties.title);
-								document.getElementById('info').innerHTML = "Score: " + milestones.length;										
-							}
-						});
-						
-					}
-					
-					map.getCanvas().focus();
+                        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                        return radius * c;
+                    }
+
+                    function deg2rad(deg) {
+                        return deg * (Math.PI / 180);
+                    }
+
+                    function setPosition(lnglat) {
+                        mPoint.coordinates[0] = lnglat[0];
+                        mPoint.coordinates[1] = lnglat[1];
+                        map.getSource('drone').setData(mPoint);
+                        milestoneData.features.forEach(function(x) {
+                            dist = compareLatLon(lnglat[0], lnglat[1], x.geometry.coordinates[0], x.geometry.coordinates[1]);
+                            if (dist <= 0.015) {
+                                if (milestones.indexOf(x.properties.title) === -1) milestones.push(x.properties.title);
+                                document.getElementById('info').innerHTML = "Score: " + milestones.length;
+                            }
+                        });
+
+                    }
+
+                    map.getCanvas().focus();
 
                     map.getCanvas().addEventListener('moved', function(e) {
                         e.preventDefault();
-                        map.panTo(e.lnglat, {
-							easing: easing
-						});						
+						cPoint = map.getCenter();
+						if(e.lpoint.coordinates[0]== cPoint.lng && e.lpoint.coordinates[1]== cPoint.lat){
+							map.panTo(e.lnglat, {
+								easing: easing
+							});
+						}
                         setPosition(e.lnglat);
                     }, true);
-				
+
                 });
-		
-				
+
+
                 var geo_options = {
                     enableHighAccuracy: true,
                     maximumAge: 30000,
@@ -340,20 +352,21 @@ GControl.prototype.onRemove = function () {
                 };
 
                 var watchID = navigator.geolocation.watchPosition(function(position) {
-				event.lnglat = [position.coords.longitude,position.coords.latitude];
-				map.getCanvas().dispatchEvent(event);
+                    mEvent.lnglat = [position.coords.longitude, position.coords.latitude];
+					mEvent.lpoint = mPoint;
+                    map.getCanvas().dispatchEvent(mEvent);
                 }, function(e) {}, geo_options);
-				
-				function onHeadingChange(event) {
-					 var heading = event.alpha;
-					 if (typeof event.webkitCompassHeading !== "undefined") {
-						  heading = event.webkitCompassHeading; //iOS non-standard
-						}
-					if (typeof heading !== "undefined" && heading !== null) {       				  
-						map.setBearing(heading);
-					}
-				}
-				window.addEventListener("deviceorientation", onHeadingChange);			
+
+                function onHeadingChange(mEvent) {
+                    var heading = mEvent.alpha;
+                    if (typeof mEvent.webkitCompassHeading !== "undefined") {
+                        heading = mEvent.webkitCompassHeading; //iOS non-standard
+                    }
+                    if (typeof heading !== "undefined" && heading !== null) {
+                        map.setBearing(heading);
+                    }
+                }
+                window.addEventListener("deviceorientation", onHeadingChange);
             });
 
         } else {
